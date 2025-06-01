@@ -21,36 +21,37 @@ def start_http_server():
     try:
         request_line = request.splitlines()[0]
         method, path, _ = request_line.split()
-        filename = path.lstrip("/") or "index.html"  # Default: index.html
+        filename = path.lstrip("/")
 
         if not os.path.isfile(filename):
-            response_body = """
+            # Response 404 dengan tampilan HTML
+            body = """
                 <html>
                     <head><title>404 Not Found</title></head>
                     <body>
                         <h1>404 Not Found</h1>
-                        <p>The requested URL was not found on this server.</p>
+                        <p>File tidak ditemukan</p>
                     </body>
                 </html>
             """
-            response = (
+            header = (
                 "HTTP/1.1 404 Not Found\r\n"
                 "Content-Type: text/html\r\n"
-                f"Content-Length: {len(response_body)}\r\n\r\n"
-                + response_body
+                f"Content-Length: {len(body)}\r\n\r\n"
             )
- 
+            client_socket.sendall(header.encode() + body.encode())
+            client_socket.close()
+            return
         else:
             with open(filename, "rb") as f:
-                content = f.read()
+                body = f.read()
             header = (
                 "HTTP/1.1 200 OK\r\n"
                 "Content-Type: text/html\r\n"
-                f"Content-Length: {len(content)}\r\n\r\n"
+                f"Content-Length: {len(body)}\r\n\r\n"
             )
-            client_socket.sendall(header.encode() + content)
-            client_socket.close()
-            return  # Keluar setelah melayani satu klien
+            client_socket.sendall(header.encode() + body)
+            return
 
     except Exception as e:
         print(f"Error parsing request: {e}")
