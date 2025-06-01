@@ -35,9 +35,10 @@ def start_http_server():
             """
             response = (
                 "HTTP/1.1 404 Not Found\r\n"
-                "Content-Type: text/plain\r\n\r\n"
-                "404 Not Found: File tidak ditemukan"
-            ) + response_body
+                "Content-Type: text/html\r\n"
+                f"Content-Length: {len(response_body)}\r\n\r\n"
+                + response_body
+            )
  
         else:
             with open(filename, "rb") as f:
