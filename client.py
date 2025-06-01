@@ -12,8 +12,8 @@ socketClient = socket(AF_INET, SOCK_STREAM)
 socketClient.connect((namaServer, portServer))
 print(f"Udah ke connect ke {namaServer}:{portServer} YAY")
 
-request = f"GET {namaFile} HTTP/1.0\r\nHost: {namaServer}\r\n\r\n"
-socketClient.send(request.encode())
+request = f"GET /{namaFile} HTTP/1.1\r\nHost: {namaServer}\r\n\r\n"
+socketClient.sendall(request.encode())
 
 response = b""
 while True:
@@ -27,6 +27,7 @@ if "200 OK" in response:
     print("File ditemukan")
 else:
     print("File tidak ditemukan")
+    
 print(f"Response dari server: {response}")
 
 choice = input("Isi kata random untuk selesai: ")
