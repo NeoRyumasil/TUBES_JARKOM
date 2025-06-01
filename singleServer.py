@@ -24,11 +24,20 @@ def start_http_server():
         filename = path.lstrip("/") or "index.html"  # Default: index.html
 
         if not os.path.isfile(filename):
+            response_body = """
+                <html>
+                    <head><title>404 Not Found</title></head>
+                    <body>
+                        <h1>404 Not Found</h1>
+                        <p>The requested URL was not found on this server.</p>
+                    </body>
+                </html>
+            """
             response = (
                 "HTTP/1.1 404 Not Found\r\n"
                 "Content-Type: text/plain\r\n\r\n"
                 "404 Not Found: File tidak ditemukan"
-            )
+            ) + response_body
  
         else:
             with open(filename, "rb") as f:
