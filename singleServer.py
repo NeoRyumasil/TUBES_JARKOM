@@ -23,18 +23,13 @@ def start_http_server():
         method, path, _ = request_line.split()
         filename = path.lstrip("/") or "index.html"  # Default: index.html
 
-        if method != "GET":
-            response = (
-                "HTTP/1.1 405 Method Not Allowed\r\n"
-                "Content-Type: text/plain\r\n\r\n"
-                "405 Method Not Allowed"
-            )
-        elif not os.path.isfile(filename):
+        if not os.path.isfile(filename):
             response = (
                 "HTTP/1.1 404 Not Found\r\n"
                 "Content-Type: text/plain\r\n\r\n"
                 "404 Not Found: File tidak ditemukan"
             )
+ 
         else:
             with open(filename, "rb") as f:
                 content = f.read()
@@ -56,7 +51,6 @@ def start_http_server():
         )
 
         client_socket.sendall(response.encode())
-        client_socket.close()
 
     # Menutup server setelah melayani satu klien
     server_socket.close()
