@@ -4,7 +4,7 @@ import os
 def start_http_server():
     # Membuat socket TCP
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    host = '128.238.251.26'  # Bisa diganti sesuai kebutuhan
+    host = '127.0.0.1'  # Bisa diganti sesuai kebutuhan
     port = 6789
     server_socket.bind((host, port))
     server_socket.listen(1)
