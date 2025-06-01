@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tubes Jarkom</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 750px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 32px 40px;
+            border-radius: 22px;
+            box-shadow: 0 8px 32px rgba(60, 60, 120, 0.18);
+            text-align: center;
+            border: 3px dashed #6dd5ed;
+        }
+        h1 {
+            color: #2d3a4b;
+            margin-bottom: 12px;
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+        }
+        .subtitle {
+            color: #00b894;
+            font-size: 1.2rem;
+            margin-bottom: 28px;
+        }
+        .anggota-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        .anggota {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(60, 60, 120, 0.10);
+            padding: 28px 20px 20px 20px;
+            min-width: 200px;
+            max-width: 240px;
+            flex: 1 1 200px;
+            color: #34495e;
+            font-size: 1.08rem;
+            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 2px solid #6dd5ed;
+        }
+        .anggota:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 8px 24px rgba(60, 60, 120, 0.18);
+            border-color: #00b894;
+        }
+        .nama {
+            font-weight: bold;
+            color: #324156;
+            margin-bottom: 4px;
+        }
+        .nim {
+            font-size: 0.98rem;
+            color: #636e72;
+        }
+    </style>
+    <!-- CDN untuk ikon jaringan (Font Awesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Selamat Datang</h1>
+        <div class="subtitle">Tugas Besar Jaringan Komputer</div>
+        <div class="anggota-list">
+            <div class="anggota">
+                <div class="nama">Muhammad Nazriel Ihram</div>
+                <div class="nim">NIM: 10301230269</div>
+            </div>
+            <div class="anggota">  
+                <div class="nama">Bimantara Ardi Winata</div>
+                <div class="nim">NIM: 103012300282</div>
+            </div>
+            <div class="anggota">
+                <div class="nama">Muhammad Alvin Ababil</div>
+                <div class="nim">NIM: 103012330064</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
