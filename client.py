@@ -28,4 +28,8 @@ if "200 OK" in response:
 else:
     print("File tidak ditemukan")
 print(f"Response dari server: {response}")
-socketClient.close()
+
+choice = input("Isi kata random untuk selesai: ")
+if choice != "":
+    print("Terima kasih telah menggunakan diri saya!")
+    socketClient.close()
