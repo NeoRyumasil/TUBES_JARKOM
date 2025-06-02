@@ -37,10 +37,6 @@ def start_server():
         )
         client_socket.sendall(header.encode() + body)
 
-
-
-
-
 if __name__ == "__main__":
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((host, port))
