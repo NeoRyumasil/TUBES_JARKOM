@@ -8,54 +8,86 @@ PORT = 6789
 
 # Handle client connections
 def handle_client(client_socket, client_address):
-    try:
-        request = client_socket.recv(1024).decode()
-        print(f"Request received from {client_address}:\n{request}")
+    # try:
+    #     request = client_socket.recv(1024).decode()
+    #     print(f"Request received from {client_address}:\n{request}")
 
-        lines = request.splitlines()
-        if len(lines) == 0:
-            client_socket.close()
-            return
+    #     lines = request.splitlines()
+    #     if len(lines) == 0:
+    #         client_socket.close()
+    #         return
 
-        # Parse request line, example: GET /index.html HTTP/1.1
-        request_line = lines[0]
-        parts = request_line.split()
-        if len(parts) < 2:
-            client_socket.close()
-            return
+    #     # Parse request line, example: GET /index.html HTTP/1.1
+    #     request_line = lines[0]
+    #     parts = request_line.split()
+    #     if len(parts) < 2:
+    #         client_socket.close()
+    #         return
 
-        filename = parts[1].lstrip('/') 
-        if filename == '':
-            filename = 'index.html'
+    #     filename = parts[1].lstrip('/') 
+    #     if filename == '':
+    #         filename = 'index.html'
 
-        if os.path.isfile(filename):
-            with open(filename, 'rb') as f:
-                body = f.read()
-            content_type = 'text/html'
-            header = (
-                "HTTP/1.1 200 OK\r\n"
-                f"Content-Type: {content_type}\r\n"
-                f"Content-Length: {len(body)}\r\n\r\n"
-            )
-            response = header.encode() + body
-            client_socket.sendall(response)
-        else:
-            body = """
-                <html>
-                    <head><title>404 Not Found</title></head>
-                    <body>
-                        <h1>404 Not Found</h1>
-                        <p>File not found</p>
-                    </body>
-                </html>
-            """
-            client_socket.sendall(
-                f"HTTP/1.1 404 Not Found\r\n"
-                "Content-Type: text/html\r\n"
-                f"Content-Length: {len(body)}\r\n\r\n".encode() + body.encode()
-            )
-    finally:
-        client_socket.close()
+    #     if os.path.isfile(filename):
+    #         with open(filename, 'rb') as f:
+    #             body = f.read()
+    #         content_type = 'text/html'
+    #         header = (
+    #             "HTTP/1.1 200 OK\r\n"
+    #             f"Content-Type: {content_type}\r\n"
+    #             f"Content-Length: {len(body)}\r\n\r\n"
+    #         )
+    #         response = header.encode() + body
+    #         client_socket.sendall(response)
+    #     else:
+    #         body = """
+    #             <html>
+    #                 <head><title>404 Not Found</title></head>
+    #                 <body>
+    #                     <h1>404 Not Found</h1>
+    #                     <p>File not found</p>
+    #                 </body>
+    #             </html>
+    #         """
+    #         client_socket.sendall(
+    #             f"HTTP/1.1 404 Not Found\r\n"
+    #             "Content-Type: text/html\r\n"
+    #             f"Content-Length: {len(body)}\r\n\r\n".encode() + body.encode()
+    #         )
+    # finally:
+    #     client_socket.close()
+    request = client_socket.recv(1024).decode()
+    print(f"Request diterima dari {client_address}:\n{request}")
+
+    request_line = request.splitlines()[0]
+    method, path, _ = request_line.split()
+    filename = path.lstrip("/")
+    
+    if not os.path.isfile(filename):
+        body = """
+            <html>
+                <head><title>404 Not Found</title></head>
+                <body>
+                    <h1>404 Not Found</h1>
+                    <p>File tidak ditemukan</p>
+                </body>
+            </html>
+        """
+        header = (
+            "HTTP/1.1 404 Not Found\r\n"
+            "Content-Type: text/html\r\n"
+            f"Content-Length: {len(body)}\r\n\r\n"
+        )
+        client_socket.sendall(header.encode() + body.encode())
+    else:
+        with open(filename, "rb") as f:
+            body = f.read()
+        header = (
+            "HTTP/1.1 200 OK\r\n"
+            "Content-Type: text/html\r\n"
+            f"Content-Length: {len(body)}\r\n\r\n"
+        )
+        client_socket.sendall(header.encode() + body)
 
 # Main server function
 def start_server():

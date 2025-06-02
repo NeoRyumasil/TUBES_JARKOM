@@ -1,25 +1,16 @@
 import socket
 import os
 
+host = '127.0.0.1' 
+port = 6789
 def start_server():
-
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    host = '127.0.0.1' 
-    port = 6789
-    server_socket.bind((host, port))
-    server_socket.listen(1)
-    print(f"Terhubung dengan {host}:{port}...")
-
-    client_socket, addr = server_socket.accept()
-    print(f"Terhubung dengan {addr}")
-
     request = client_socket.recv(1024).decode()
     print(f"Request diterima:\n{request}")
-    
+
     request_line = request.splitlines()[0]
     method, path, _ = request_line.split()
     filename = path.lstrip("/")
-
+    
     if not os.path.isfile(filename):
         body = """
             <html>
@@ -51,4 +42,10 @@ def start_server():
 
 
 if __name__ == "__main__":
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind((host, port))
+    server_socket.listen(1)
+    print(f"Terhubung dengan {host}:{port}...")
+    client_socket, addr = server_socket.accept()
+    print(f"Terhubung dengan {addr}")
     start_server()
