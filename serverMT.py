@@ -39,7 +39,6 @@ def handle_client(client_socket, addr):
         client_socket.sendall(header.encode() + body)
     client_socket.close()
 
-# Main server function
 def start_server():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((HOST, PORT))
