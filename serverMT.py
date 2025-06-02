@@ -28,6 +28,7 @@ def handle_client(client_socket, addr):
             f"Content-Length: {len(body)}\r\n\r\n"
         )
         client_socket.sendall(header.encode() + body.encode())
+        client_socket.close()
     else:
         with open(filename, "rb") as f:
             body = f.read()
