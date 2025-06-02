@@ -8,10 +8,17 @@ def handle_client(client_socket, addr):
     request = client_socket.recv(1024).decode()
     print(f"Request diterima dari {addr}:\n{request}")
 
-    request_line = request.splitlines()[0]
-    method, path, _ = request_line.split()
-    filename = path.lstrip("/")
-    
+    lines = request.splitlines()
+    if len(lines) == 0:
+        client_socket.close()
+        return
+
+    request_line = lines[0]
+    parts = request_line.split()
+    if len(parts) < 2:
+        client_socket.close()
+        return
+    filename = parts[1].lstrip('/')
     if not os.path.isfile(filename):
         body = """
             <html>
