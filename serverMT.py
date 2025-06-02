@@ -5,20 +5,24 @@ import threading
 HOST = '127.0.0.1'
 PORT = 6789
 def handle_client(client_socket, addr):
-    request = client_socket.recv(1024).decode()
+    request = client_socket.recv(4096).decode() 
     print(f"Request diterima dari {addr}:\n{request}")
 
+    request = request.strip()
     lines = request.splitlines()
-    if len(lines) == 0:
+    if not lines:
         client_socket.close()
         return
 
     request_line = lines[0]
     parts = request_line.split()
-    if len(parts) < 2:
+    if len(parts) < 3:
         client_socket.close()
         return
+
     filename = parts[1].lstrip('/')
+
+
     if not os.path.isfile(filename):
         body = """
             <html>
@@ -32,17 +36,18 @@ def handle_client(client_socket, addr):
         header = (
             "HTTP/1.1 404 Not Found\r\n"
             "Content-Type: text/html\r\n"
-            f"Content-Length: {len(body)}\r\n\r\n"
+            f"Content-Length: {len(body)}\r\n"
+            "Connection: close\r\n\r\n"
         )
         client_socket.sendall(header.encode() + body.encode())
-        client_socket.close()
     else:
         with open(filename, "rb") as f:
             body = f.read()
         header = (
             "HTTP/1.1 200 OK\r\n"
             "Content-Type: text/html\r\n"
-            f"Content-Length: {len(body)}\r\n\r\n"
+            f"Content-Length: {len(body)}\r\n"
+            "Connection: close\r\n\r\n"
         )
         client_socket.sendall(header.encode() + body)
     client_socket.close()
