@@ -6,21 +6,6 @@ import threading
 HOST = '127.0.0.1'
 PORT = 6789
 
-# Get content type based on file extension
-def get_content_type(filename):
-    if filename.endswith(".html") or filename.endswith(".htm"):
-        return "text/html"
-    elif filename.endswith(".css"):
-        return "text/css"
-    elif filename.endswith(".js"):
-        return "application/javascript"
-    elif filename.endswith(".png"):
-        return "image/png"
-    elif filename.endswith(".jpg") or filename.endswith(".jpeg"):
-        return "image/jpeg"
-    else:
-        return "application/octet-stream"
-
 # Handle client connections
 def handle_client(client_socket, client_address):
     try:
@@ -39,14 +24,14 @@ def handle_client(client_socket, client_address):
             client_socket.close()
             return
 
-        filename = parts[1].lstrip('/').replace(",", ".")  # Fix typo: index,html -> index.html
+        filename = parts[1].lstrip('/') 
         if filename == '':
             filename = 'index.html'
 
         if os.path.isfile(filename):
             with open(filename, 'rb') as f:
                 body = f.read()
-            content_type = get_content_type(filename)
+            content_type = 'text/html'
             header = (
                 "HTTP/1.1 200 OK\r\n"
                 f"Content-Type: {content_type}\r\n"
@@ -75,7 +60,6 @@ def handle_client(client_socket, client_address):
 # Main server function
 def start_server():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server.bind((HOST, PORT))
     server.listen(5)
     print(f"Server started on {HOST}:{PORT}")
